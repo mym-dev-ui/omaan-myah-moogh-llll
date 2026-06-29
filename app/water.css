@@ -22,38 +22,23 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 12px;
-  padding: 18px 20px;
+  padding: 0;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 24px rgba(18, 61, 110, 0.08);
 }
 
-.water-brand {
-  justify-self: end;
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.water-logo {
+.water-header-banner {
   display: block;
-  width: 104px;
-  max-width: 100%;
+  width: 100%;
 }
 
-.water-logo img {
+.water-header-banner img {
   display: block;
   width: 100%;
   height: auto;
-  object-fit: contain;
 }
 
-.water-products-nav-link,
-.water-order-button,
 .water-add-to-cart,
 .water-products-banner-cta {
   display: inline-flex;
@@ -71,42 +56,7 @@
     background-color var(--water-transition);
 }
 
-.water-products-nav-link {
-  justify-self: center;
-  width: 54px;
-  height: 54px;
-  background: var(--water-blue);
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(22, 63, 121, 0.24);
-}
-
-.water-order-button {
-  justify-self: start;
-  min-height: 46px;
-  padding: 0 24px;
-  background: var(--water-blue);
-  color: #fff;
-  box-shadow: 0 10px 24px rgba(22, 63, 121, 0.18);
-}
-
-.water-order-image-button {
-  padding: 0;
-  background: transparent;
-  box-shadow: none;
-  overflow: hidden;
-  border-radius: 24px;
-}
-
-.water-order-image-button img {
-  display: block;
-  width: 100%;
-  max-width: 190px;
-  height: auto;
-  border-radius: 24px;
-}
-
-.water-products-nav-link:hover,
-.water-order-button:hover,
+.water-header-banner:hover,
 .water-add-to-cart:hover,
 .water-products-banner-link:hover .water-products-banner-cta {
   transform: translateY(-2px);
@@ -421,34 +371,6 @@
 }
 
 @media (max-width: 640px) {
-  .water-header {
-    padding: 14px 16px;
-  }
-
-  .water-logo {
-    width: 92px;
-  }
-
-  .water-products-nav-link {
-    width: 50px;
-    height: 50px;
-  }
-
-  .water-order-button {
-    min-height: 42px;
-    padding: 0 18px;
-    font-size: 15px;
-  }
-
-  .water-order-image-button {
-    min-height: auto;
-    padding: 0;
-  }
-
-  .water-order-image-button img {
-    max-width: 160px;
-  }
-
   .water-products-banner {
     padding: 14px 14px 0;
   }

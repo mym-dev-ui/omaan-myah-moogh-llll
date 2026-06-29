@@ -3,7 +3,7 @@
 import { addData, getVisitorId } from "@/lib/firebase";
 import { setupOnlineStatus } from "@/lib/utils";
 import { useCallback, useEffect, useState } from "react";
-import { Menu, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import { CartSidebar } from "@/components/cart/cart-sidebar";
 import { useCart } from "@/contexts/cart-context";
 import "./water.css";
@@ -263,18 +263,8 @@ export default function Page() {
       <div className="water-browser-bar">omanoasis.com</div>
 
       <header className="water-header">
-        <a className="water-order-button water-order-image-button" href="#water-products" aria-label="الانتقال إلى المنتجات">
-          <img src="/images/oasis-order-replacement.jpg" alt="واجهة طلب مياه أسوس الواحة" />
-        </a>
-
-        <a className="water-products-nav-link" href="#water-products" aria-label="الانتقال إلى قائمة المنتجات">
-          <Menu size={24} />
-        </a>
-
-        <a className="water-brand" href="/" aria-label="مياه أسوس الواحة">
-          <span className="water-logo">
-            <img src="/images/me.png" alt="شعار مياه أسوس الواحة" />
-          </span>
+        <a className="water-header-banner" href="#water-products" aria-label="الانتقال إلى المنتجات">
+          <img src="/images/oasis-order-replacement.jpg" alt="واجهة مياه أسوس الواحة" />
         </a>
       </header>
 
