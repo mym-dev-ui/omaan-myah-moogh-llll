@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">عروض شركة مياه الواحة</title>
+  <desc id="desc">بانر عرض خصم 50% على 20 كرتون مياه 200 مل مع هدية براد مياه</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e3fbff"/>
+      <stop offset="55%" stop-color="#b8ecf7"/>
+      <stop offset="100%" stop-color="#80d8ee"/>
+    </linearGradient>
+    <linearGradient id="deepBlue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#063d7b"/>
+      <stop offset="100%" stop-color="#0275d8"/>
+    </linearGradient>
+    <linearGradient id="pink" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff5ca8"/>
+      <stop offset="100%" stop-color="#e51677"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#043964" flood-opacity=".22"/>
+    </filter>
+    <filter id="smallShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#064c86" flood-opacity=".18"/>
+    </filter>
+    <style>
+      .rtl { direction: rtl; unicode-bidi: plaintext; font-family: "Cairo", "Tajawal", Arial, Tahoma, sans-serif; }
+      .headline { fill: #073c75; font-weight: 900; font-size: 48px; }
+      .offer { fill: #fff; font-weight: 900; font-size: 86px; }
+      .body { fill: #083c75; font-weight: 900; font-size: 38px; }
+      .detail { fill: #154f82; font-weight: 800; font-size: 30px; }
+      .price-label { fill: #073c75; font-weight: 900; font-size: 28px; }
+      .price { fill: #e51677; font-weight: 900; font-size: 62px; }
+      .gift { fill: #fff; font-weight: 900; font-size: 25px; }
+      .feature { fill: #083c75; font-weight: 900; font-size: 20px; }
+      .feature-sub { fill: #23668f; font-weight: 800; font-size: 16px; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="700" fill="url(#bg)"/>
+  <path d="M-20 132C136 40 260 65 402 118c179 67 331 25 468-42 127-62 238-61 350 5v-105H-20Z" fill="#ffffff" opacity=".42"/>
+  <path d="M-24 604c162-84 328-76 492-16 159 58 310 75 468 6 107-47 199-53 288-16v145H-24Z" fill="#eefcff" opacity=".68"/>
+  <path d="M777 106c80 28 158 34 245-20 44-27 101-36 162-16" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity=".7"/>
+  <path d="M34 235c103-44 186-30 273 23" fill="none" stroke="#6dcce8" stroke-width="7" stroke-linecap="round" opacity=".58"/>
+  <circle cx="72" cy="92" r="22" fill="#fff" opacity=".58"/>
+  <circle cx="112" cy="150" r="10" fill="#fff" opacity=".65"/>
+  <circle cx="1030" cy="150" r="30" fill="#fff" opacity=".45"/>
+  <circle cx="1096" cy="214" r="14" fill="#fff" opacity=".65"/>
+  <circle cx="650" cy="82" r="9" fill="#fff" opacity=".55"/>
+  <circle cx="476" cy="612" r="16" fill="#fff" opacity=".54"/>
+
+  <g filter="url(#smallShadow)">
+    <circle cx="90" cy="86" r="48" fill="#fff"/>
+    <image href="me.png" x="52" y="48" width="76" height="76" preserveAspectRatio="xMidYMid meet"/>
+  </g>
+
+  <g filter="url(#softShadow)">
+    <image href="Big-Dispencer-copy-1-2.png" x="54" y="214" width="255" height="245" preserveAspectRatio="xMidYMid meet"/>
+  </g>
+  <g filter="url(#softShadow)">
+    <image href="Asset-2.png" x="725" y="205" width="415" height="210" preserveAspectRatio="xMidYMid meet"/>
+    <image href="30-Anniversary-product-line-up_200ml-2.png" x="690" y="228" width="125" height="178" preserveAspectRatio="xMidYMid meet"/>
+  </g>
+
+  <g filter="url(#smallShadow)">
+    <circle cx="273" cy="193" r="82" fill="url(#pink)"/>
+    <text class="rtl gift" x="273" y="181" text-anchor="middle">هدية</text>
+    <text class="rtl gift" x="273" y="214" text-anchor="middle">براد مياه</text>
+  </g>
+
+  <g text-anchor="middle">
+    <text class="rtl headline" x="600" y="102">عروض شركة مياه الواحة</text>
+    <g filter="url(#smallShadow)">
+      <rect x="418" y="124" width="364" height="115" rx="58" fill="url(#deepBlue)"/>
+      <text class="rtl offer" x="600" y="206">خصم 50%</text>
+    </g>
+    <text class="rtl body" x="600" y="293">اطلب 20 كرتون مياه</text>
+    <text class="rtl detail" x="600" y="342">20 كرتون - 200 مل - 30 عبوة</text>
+    <text class="rtl price-label" x="600" y="392">السعر:</text>
+    <text class="rtl price" x="600" y="459">18 ريال فقط</text>
+    <text class="rtl detail" x="600" y="505">مع هدية براد مياه</text>
+  </g>
+
+  <g transform="translate(68 562)">
+    <rect width="1064" height="100" rx="30" fill="#ffffff" opacity=".9" filter="url(#smallShadow)"/>
+    <g transform="translate(905 24)" text-anchor="end">
+      <circle cx="52" cy="26" r="23" fill="#e51677" opacity=".95"/>
+      <path d="M40 26h24M52 14v24" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+      <text class="rtl feature" x="0" y="19">توصيل مجاني</text>
+      <text class="rtl feature-sub" x="0" y="48">للطلبات داخل نطاق الخدمة</text>
+    </g>
+    <g transform="translate(640 24)" text-anchor="end">
+      <circle cx="52" cy="26" r="23" fill="#0275d8" opacity=".95"/>
+      <path d="M39 29c10-22 28-22 27 0-1 15-27 15-27 0Z" fill="#fff"/>
+      <text class="rtl feature" x="0" y="19">مياه متوازنة نقية وصحية</text>
+      <text class="rtl feature-sub" x="0" y="48">انتعاش يومي بجودة موثوقة</text>
+    </g>
+    <g transform="translate(374 24)" text-anchor="end">
+      <circle cx="52" cy="26" r="23" fill="#0b4f8f" opacity=".95"/>
+      <text x="52" y="35" text-anchor="middle" fill="#fff" font-size="22" font-weight="900">0</text>
+      <text class="rtl feature" x="0" y="19">صفر صوديوم</text>
+      <text class="rtl feature-sub" x="0" y="48">خيار صحي لعائلتك</text>
+    </g>
+    <g transform="translate(130 24)" text-anchor="end">
+      <circle cx="52" cy="26" r="23" fill="#e51677" opacity=".95"/>
+      <path d="M39 27l9 9 18-22" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      <text class="rtl feature" x="0" y="19">جودة مضمونة</text>
+      <text class="rtl feature-sub" x="0" y="48">منتجات أصلية 100%</text>
+    </g>
+  </g>
+</svg>
