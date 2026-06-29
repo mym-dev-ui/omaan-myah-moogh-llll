@@ -143,15 +143,18 @@ const waterProducts = [
 const serviceHighlights = [
   {
     id: "daily-purity",
-    text: "مياه نقية تناسب الاستخدام اليومي",
+    title: "مياه متوازنة",
+    text: "نقية وصحية",
   },
   {
     id: "home-office",
-    text: "منتجات متنوعة للمنازل والمكاتب",
+    title: "توصيل مجاني",
+    text: "لخدمة التوصيل المنزلي",
   },
   {
     id: "hospitality",
-    text: "خيارات عملية للضيافة والتوزيع",
+    title: "صفر صوديوم",
+    text: "خيار صحي لعائلتك",
   },
 ]
 
@@ -257,20 +260,34 @@ export default function Page() {
 
   return (
     <main className="water-home" dir="rtl">
+      <div className="water-browser-bar">omanoasis.com</div>
+
       <header className="water-header">
-        <a className="water-brand" href="/" aria-label="مياه أسوس الواحة">
-          <span className="water-logo">
-            <img src="/images/me.png" alt="شعار مياه أسوس الواحة" />
-          </span>
-          <span>مياه أسوس الواحة</span>
-        </a>
+        <a className="water-order-button" href="#water-products">اطلب الآن</a>
 
         <a className="water-products-nav-link" href="#water-products" aria-label="الانتقال إلى قائمة المنتجات">
           <Menu size={24} />
         </a>
 
-        <a className="water-order-button" href="#water-products">اطلب الآن</a>
+        <a className="water-brand" href="/" aria-label="مياه أسوس الواحة">
+          <span className="water-logo">
+            <img src="/images/me.png" alt="شعار مياه أسوس الواحة" />
+          </span>
+        </a>
       </header>
+
+      <section className="water-hero-banner" aria-label="منتجات شركة مياه الواحة">
+        <div className="water-hero-overlay" />
+        <img
+          className="water-hero-background"
+          src="/images/water-offer-reference.jpg"
+          alt="منتجات شركة مياه الواحة"
+        />
+        <div className="water-hero-content">
+          <span className="water-hero-eyebrow">منتجات عمان أواسس</span>
+          <h1 className="water-hero-title">المنتجات</h1>
+        </div>
+      </section>
 
       <section className="water-products-banner" aria-label="عروض شركة مياه الواحة">
         <button
@@ -299,7 +316,10 @@ export default function Page() {
           {serviceHighlights.map((highlight) => (
             <article className="water-quality-card" key={highlight.id}>
               <span aria-hidden="true">✓</span>
-              <p>{highlight.text}</p>
+              <div>
+                <strong>{highlight.title}</strong>
+                <p>{highlight.text}</p>
+              </div>
             </article>
           ))}
         </div>
