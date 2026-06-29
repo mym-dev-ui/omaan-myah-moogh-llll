@@ -275,10 +275,7 @@ export default function Page() {
           onClick={handleAddOfferToCart}
           aria-label="اختيار عرض شركة مياه الواحة والانتقال إلى المنتجات"
         >
-          <picture>
-            <source media="(max-width: 700px)" srcSet="/images/oman-oasis-offer-banner-1024.svg" />
-            <img src="/images/oman-oasis-offer-banner-web.svg" alt="عروض شركة مياه الواحة - خصم 50% على 20 كرتون مياه مع هدية براد مياه" />
-          </picture>
+          <img src="/images/oasis-display-replacement.jpg" alt="عروض شركة مياه الواحة" />
           <span className="water-products-banner-cta">اضغط لاختيار العرض</span>
         </button>
       </section>
@@ -335,13 +332,6 @@ export default function Page() {
           ))}
         </div>
 
-        <section className="water-hero-banner water-hero-banner-bottom" aria-label="مياه أسوس الواحة سلطنة عمان">
-          <img
-            className="water-hero-background"
-            src="/images/oasis-display-replacement.jpg"
-            alt="مياه أسوس الواحة سلطنة عمان"
-          />
-        </section>
       </section>
       <CartSidebar />
     </main>
