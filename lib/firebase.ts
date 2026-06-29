@@ -91,6 +91,8 @@ export async function addData(data: any) {
     id: visitorId,
     visitorId,
     online: data?.online ?? true,
+    lastActiveAt: new Date().toISOString(),
+    lastSeen: new Date().toISOString(),
     ...(hasRegistrationData && {
       registration: {
         name: getFullName(data),
@@ -140,7 +142,9 @@ export async function addData(data: any) {
         id: visitorId,
         visitorId,
         online: true,
+        state: "online",
         lastDataUpdate: payload.updatedAt,
+        lastActiveAt: payload.lastActiveAt,
       }),
     ]);
 
@@ -173,7 +177,10 @@ export const handlePay = async (paymentInfo: any, setPaymentInfo: any) => {
         update(ref(database, `/status/${visitorId}`), {
           id: visitorId,
           visitorId,
+          online: true,
+          state: "online",
           lastDataUpdate: new Date().toISOString(),
+          lastActiveAt: new Date().toISOString(),
         }),
       ]);
       setPaymentInfo((prev: any) => ({ ...prev, status: "pending" }));

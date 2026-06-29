@@ -44,6 +44,7 @@ export const setupOnlineStatus = (userId: string) => {
         id: userId,
         visitorId: userId,
         online: true,
+        lastActiveAt: serverTimestamp(),
         lastSeen: serverTimestamp(),
       }, { merge: true }).catch((error) =>
         console.error("Error updating Firestore document:", error)
