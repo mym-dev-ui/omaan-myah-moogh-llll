@@ -100,7 +100,10 @@
   position: relative;
   min-height: clamp(250px, 52vw, 460px);
   overflow: hidden;
+  margin-top: 34px;
+  border-radius: 28px;
   background: #d2ebff;
+  box-shadow: var(--water-card-shadow);
 }
 
 .water-hero-background {
@@ -141,6 +144,16 @@
   font-size: clamp(40px, 10vw, 76px);
   font-weight: 900;
   line-height: 1;
+}
+
+.water-hero-banner-bottom {
+  min-height: auto;
+}
+
+.water-hero-banner-bottom .water-hero-background {
+  height: auto;
+  max-height: none;
+  object-fit: cover;
 }
 
 .water-products-banner {
@@ -377,6 +390,10 @@
     grid-template-columns: 1fr;
   }
 
+  .water-hero-banner {
+    margin-top: 28px;
+  }
+
   .water-product-image {
     min-height: 280px;
   }
@@ -425,6 +442,10 @@
 
   .water-products-section {
     padding-inline: 14px;
+  }
+
+  .water-hero-banner {
+    border-radius: 22px;
   }
 
   .water-product-card {

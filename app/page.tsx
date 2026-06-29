@@ -276,19 +276,6 @@ export default function Page() {
         </a>
       </header>
 
-      <section className="water-hero-banner" aria-label="منتجات شركة مياه الواحة">
-        <div className="water-hero-overlay" />
-        <img
-          className="water-hero-background"
-          src="/images/water-offer-reference.jpg"
-          alt="منتجات شركة مياه الواحة"
-        />
-        <div className="water-hero-content">
-          <span className="water-hero-eyebrow">منتجات عمان أواسس</span>
-          <h1 className="water-hero-title">المنتجات</h1>
-        </div>
-      </section>
-
       <section className="water-products-banner" aria-label="عروض شركة مياه الواحة">
         <button
           className="water-products-banner-link"
@@ -355,6 +342,14 @@ export default function Page() {
             </article>
           ))}
         </div>
+
+        <section className="water-hero-banner water-hero-banner-bottom" aria-label="مياه أسوس الواحة سلطنة عمان">
+          <img
+            className="water-hero-background"
+            src="/images/oasis-hero-new.jpg"
+            alt="مياه أسوس الواحة سلطنة عمان"
+          />
+        </section>
       </section>
       <CartSidebar />
     </main>
