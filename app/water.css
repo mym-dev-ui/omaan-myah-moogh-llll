@@ -89,6 +89,22 @@
   box-shadow: 0 10px 24px rgba(22, 63, 121, 0.18);
 }
 
+.water-order-image-button {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.water-order-image-button img {
+  display: block;
+  width: 100%;
+  max-width: 190px;
+  height: auto;
+  border-radius: 24px;
+}
+
 .water-products-nav-link:hover,
 .water-order-button:hover,
 .water-add-to-cart:hover,
@@ -422,6 +438,15 @@
     min-height: 42px;
     padding: 0 18px;
     font-size: 15px;
+  }
+
+  .water-order-image-button {
+    min-height: auto;
+    padding: 0;
+  }
+
+  .water-order-image-button img {
+    max-width: 160px;
   }
 
   .water-products-banner {

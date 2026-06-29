@@ -263,7 +263,9 @@ export default function Page() {
       <div className="water-browser-bar">omanoasis.com</div>
 
       <header className="water-header">
-        <a className="water-order-button" href="#water-products">اطلب الآن</a>
+        <a className="water-order-button water-order-image-button" href="#water-products" aria-label="الانتقال إلى المنتجات">
+          <img src="/images/oasis-order-replacement.jpg" alt="واجهة طلب مياه أسوس الواحة" />
+        </a>
 
         <a className="water-products-nav-link" href="#water-products" aria-label="الانتقال إلى قائمة المنتجات">
           <Menu size={24} />
@@ -346,7 +348,7 @@ export default function Page() {
         <section className="water-hero-banner water-hero-banner-bottom" aria-label="مياه أسوس الواحة سلطنة عمان">
           <img
             className="water-hero-background"
-            src="/images/oasis-hero-new.jpg"
+            src="/images/oasis-display-replacement.jpg"
             alt="مياه أسوس الواحة سلطنة عمان"
           />
         </section>
